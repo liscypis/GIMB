@@ -5,6 +5,7 @@
 #include "Buffer.h"
 #include "Timer.h"
 #include "Images.h"
+#include "Listener.h"
 
 Engine::Engine(const char* title, int x, int y)
 {
@@ -59,15 +60,27 @@ void Engine::running() {
 	Font Font("OpenSansXL.pcx");
 	Images i(buffer, "Sample.bmp");
 	Text Text(buffer, *Font.getFont());
-	Timer t(2555);
+	Timer t(100000);
+	Listener lis;
 
-	while (-1)
+	
+	while (!exit)
 	{
 		while ( t.getCount()> 0 ) {
 			Text.print("by Zwierzu & Lisu", 1000, 690, 52, 152, 219);
-			i.printImage(365, 160, 600,400);
+			i.printImage(100, 160, 512,512);
+			lis.choice(buffer);
 			buff.clear();
+
 			t.decreaseCount();
+			
+			if(key[KEY_ESC])
+			{
+				exit = true;
+				break;
+			}
+				
 		}
 	}
+	
 }

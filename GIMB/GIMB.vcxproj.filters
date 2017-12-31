@@ -39,6 +39,12 @@
     <ClCompile Include="Images.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Filters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Listener.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -60,6 +66,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Images.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Filters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Listener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
