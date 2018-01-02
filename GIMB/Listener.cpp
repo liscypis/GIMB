@@ -16,6 +16,8 @@ void Listener::choice(BITMAP *buffer)
 	if(key[KEY_4]) mode ='n';
 	if(key[KEY_5]) mode ='m';
 	if(key[KEY_6]) mode ='r';
+	if(key[KEY_7]) mode ='x';
+	if(key[KEY_8]) Filters::fill_array();
 	if(mode == 'a')
 		Filters::linear_filters(buffer,"Mean Filter");
 	if(mode == 'h')
@@ -28,8 +30,9 @@ void Listener::choice(BITMAP *buffer)
 		Filters::negative_filter(buffer);
 	if(mode == 'm')
 		Filters::minimal_filter(buffer);
+	if(mode == 'x')
+		Filters::maxinum_filter(buffer);
 }
-
 
 Listener::~Listener()
 {
