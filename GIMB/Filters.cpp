@@ -1,4 +1,5 @@
 #include <ctime>
+#include <string>
 #include <iostream>
 #include "Filters.h"
 
@@ -32,16 +33,14 @@ int Filters::vertical_edges_mask[] = {
 };
 
 int Filters::random_mask[25];
+int Filters::cursor_position_x = x0 + 10;
+int Filters::cursor_position_y = y0 + 10;
+int Filters::power = 190;
 
 void Filters::fill_array()
 {
 	for (int i = 0; i < 25; i++)
 		random_mask[i] = std::rand() % 10 - 2;
-}
-
-int Filters::get_mask()
-{
-	return *mask;
 }
 
 int Filters::mask[25];
@@ -62,37 +61,26 @@ void Filters::linear_filters(BITMAP* buffer, const char* type)
 			mask[i] = random_mask[i];
 	}
 
-	int sum_r, sum_g, sum_b;
+	int sum_r;
 	const int margin = 5 - 1 / 2;
 	for (int i = x0 + margin; i < x_margin; i++)
 	{
 		for (int j = y0 + margin; j < y_margin; j++)
 		{
 			sum_r = 0;
-			sum_g = 0;
-			sum_b = 0;
-
-			if (255 - getr(getpixel(buffer, i, j)) <= POWER)
+			if (getr(getpixel(buffer, i, j)) > getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) - power
+				&& getr(getpixel(buffer, i, j)) < getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) + power)
 			{
 				for (int k = 0; k < 5; k++)
 					for (int l = 0; l < 5; l++)
 					{
 						sum_r += mask[k * 5 + l] * getr(getpixel(buffer, i + k - margin, j + l - margin));
-						sum_g += mask[k * 5 + l] * getg(getpixel(buffer, i + k - margin, j + l - margin));
-						sum_b += mask[k * 5 + l] * getb(getpixel(buffer, i + k - margin, j + l - margin));
 					}
 
-
 				sum_r /= sizeof(mask) / sizeof(int);
-				sum_g /= sizeof(mask) / sizeof(int);
-				sum_b /= sizeof(mask) / sizeof(int);
 
 				if (sum_r > 255) sum_r = 255;
 				else if (sum_r < 0) sum_r = 0;
-				if (sum_g > 255) sum_g = 255;
-				else if (sum_g < 0) sum_g = 0;
-				if (sum_b > 255) sum_b = 255;
-				else if (sum_b < 0) sum_b = 0;
 			}
 			else
 				sum_r = getr(getpixel(buffer, i, j));
@@ -109,7 +97,8 @@ void Filters::negative_filter(BITMAP* buffer)
 	for (int i = x0; i < x_margin; i++)
 		for (int j = y0; j < y_margin; j++)
 		{
-			if (255 - getr(getpixel(buffer, i, j)) <= POWER)
+			if (getr(getpixel(buffer, i, j)) > getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) - power
+				&& getr(getpixel(buffer, i, j)) < getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) + power)
 			{
 				color = 255 - getr(getpixel(buffer, i, j));
 				putpixel(buffer, i + 520, j, makecol(color, color, color));
@@ -129,7 +118,8 @@ void Filters::minimal_filter(BITMAP* buffer)
 	{
 		for (int j = y0 + margin; j < y_margin; j++)
 		{
-			if (255 - getr(getpixel(buffer, i, j)) <= POWER)
+			if (getr(getpixel(buffer, i, j)) > getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) - power
+				&& getr(getpixel(buffer, i, j)) < getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) + power)
 			{
 				int collorMin = 255;
 				for (int k = 0; k < 5; k++)
@@ -156,7 +146,8 @@ void Filters::maxinum_filter(BITMAP* buffer)
 	{
 		for (int j = y0 + margin; j < y_margin; j++)
 		{
-			if (255 - getr(getpixel(buffer, i, j)) <= POWER)
+			if (getr(getpixel(buffer, i, j)) > getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) - power
+				&& getr(getpixel(buffer, i, j)) < getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) + power)
 			{
 				int collorMin = 0;
 				for (int k = 0; k < 5; k++)
@@ -174,6 +165,57 @@ void Filters::maxinum_filter(BITMAP* buffer)
 			}
 		}
 	}
+}
+
+
+void Filters::set_cursor_position_x(int x)
+{
+	cursor_position_x = x;
+}
+
+void Filters::set_cursor_position_y(int y)
+{
+	cursor_position_y = y;
+}
+
+int Filters::get_cursor_position_x()
+{
+	return cursor_position_x;
+}
+
+int Filters::get_cursor_position_y()
+{
+	return cursor_position_y;
+}
+
+const char* Filters::to_string_cursor_position()
+{
+	std::string s = std::to_string(get_cursor_position_x());
+	s += " ";
+	s += std::to_string(get_cursor_position_y());
+	return s.c_str();
+}
+
+const char* Filters::to_string_power()
+{
+	std::string s = std::to_string(get_power());
+	return s.c_str();
+}
+
+void Filters::set_power(int p)
+{
+	power = p;
+}
+
+int Filters::get_power()
+{
+	return power;
+}
+
+
+int Filters::get_mask()
+{
+	return *mask;
 }
 
 

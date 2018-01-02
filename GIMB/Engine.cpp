@@ -1,3 +1,4 @@
+
 #include "Engine.h"
 #include "UserInput.h"
 #include "Text.h"
@@ -6,6 +7,8 @@
 #include "Timer.h"
 #include "Images.h"
 #include "Listener.h"
+#include "Filters.h"
+
 
 Engine::Engine(const char* title, int x, int y)
 {
@@ -60,7 +63,7 @@ void Engine::running() {
 	Font Font("OpenSansXL.pcx");
 	Images i(buffer, "Sample.bmp");
 	Text Text(buffer, *Font.getFont());
-	Timer t(100000);
+	Timer t(1000);
 	Listener lis;
 
 	
@@ -68,6 +71,9 @@ void Engine::running() {
 	{
 		while ( t.getCount()> 0 ) {
 			Text.print("by Zwierzu & Lisu", 1000, 690, 52, 152, 219);
+			Text.print(Filters::to_string_cursor_position(), 50, 20, 52, 152, 219);
+			Text.print("Moc rozdzki", 250, 0, 52, 152, 219);
+			Text.print(Filters::to_string_power(), 250, 20, 52, 152, 219);
 			i.printImage(100, 160, 512,512);
 			lis.choice(buffer);
 			buff.clear();

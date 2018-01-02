@@ -1,5 +1,8 @@
 #pragma once
 #include <allegro.h>
+
+
+
 class Filters
 {
 	static const int x0 = 100;
@@ -11,7 +14,10 @@ class Filters
 	static int vertical_edges_mask[];
 	static int random_mask[];
 	static int mask[];
-	static const int POWER = 200;
+	static int power;
+	static int cursor_position_x;
+	static int cursor_position_y;
+
 public:
 	Filters();
 	static void linear_filters(BITMAP* buffer,const char* type);
@@ -19,7 +25,17 @@ public:
 	static void minimal_filter(BITMAP* buffer);
 	static void maxinum_filter(BITMAP* buffer);
 	static void fill_array();
-	static int get_mask();
+	static void set_cursor_position_x(int x);
+	static void set_cursor_position_y(int y);
+	static int get_cursor_position_x();
+	static int get_cursor_position_y();
+	static const char * to_string_cursor_position();
+	static const char* to_string_power();
+	static void set_power(int p);
+	static int get_power();
+
+	static int get_mask(); // do wyœwietlania maski 
+
 
 	~Filters();
 };
