@@ -1,22 +1,59 @@
+#include <ctime>
+#include <iostream>
 #include "Filters.h"
+
 
 Filters::Filters()
 {
 }
 
-void Filters::average_filter(BITMAP* buffer)
+int Filters::average_mask[] = {
+	1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1
+};
+
+int Filters::horizontal_edges_mask[] = {
+	0, 0, -1, 0, 0,
+	0, 0, -1, 0, 0,
+	0, 0, 2, 0, 0,
+	0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0,
+};
+
+int Filters::vertical_edges_mask[] = {
+	0, 0, -1, 0, 0,
+	0, 0, -1, 0, 0,
+	0, 0, 4, 0, 0,
+	0, 0, -1, 0, 0,
+	0, 0, -1, 0, 0,
+};
+
+
+void Filters::linear_filters(BITMAP* buffer, const char* type)
 {
-	//int mask[25] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-	int mask[25] = {1,	1,	2	,1,	1,
-1,	2	,4,	2,	1,
-2,	4	,8	,4,	2,
-1,	2,	4	,2	,1,
-1,	1	,2,	1,	1};
+	srand( time( NULL ) );
+	int mask[25];
+	
+		for (int i = 0; i < 25; i++)
+		{
+			if(type == "Mean Filter")
+				mask[i] = average_mask[i];
+			if(type == "Horizontal Edges")
+				mask[i] = horizontal_edges_mask[i];
+			if(type == "Vertical Edges")
+				mask[i] = vertical_edges_mask[i];
+			if(type == "Random")
+				mask[i] = std::rand()% 10 - 2;
+		}
+			
 	int sum_r, sum_g, sum_b;
-	int margin = 5 - 1 / 2;
+	const int margin = 5 - 1 / 2;
 	for (int i = x0 + margin; i < x_margin; i++)
 	{
-		for (int j = y0 + margin; j < y_margin ; j++)
+		for (int j = y0 + margin; j < y_margin; j++)
 		{
 			sum_r = 0;
 			sum_g = 0;
@@ -41,7 +78,36 @@ void Filters::average_filter(BITMAP* buffer)
 			if (sum_b > 255) sum_b = 255;
 			else if (sum_b < 0) sum_b = 0;
 
-			putpixel(buffer, i+520, j, makecol(sum_r, sum_r, sum_r));
+			putpixel(buffer, i + 520, j, makecol(sum_r, sum_r, sum_r));
+		}
+	}
+}
+
+void Filters::negative_filter(BITMAP* buffer)
+{
+	for (int i = x0; i < x_margin; i++)
+		for (int j = y0; j < y_margin; j++)
+		{
+			int color = 255 - getr(getpixel(buffer, i, j));
+			putpixel(buffer, i + 520, j, makecol(color, color, color));
+		}
+}
+
+void Filters::minimal_filter(BITMAP* buffer)
+{
+	const int margin = 5 - 1 / 2;
+	for (int i = x0 + margin; i < x_margin; i++)
+	{
+		for (int j = y0 + margin; j < y_margin; j++)
+		{
+			int collorMin = 255;
+			for (int k = 0; k < 5; k++)
+				for (int l = 0; l < 5; l++)
+				{
+					if (collorMin > getr(getpixel(buffer, i + k - margin, j + l - margin)))
+						collorMin = getr(getpixel(buffer, i + k - margin, j + l - margin));
+				}
+			putpixel(buffer, i + 520, j, makecol(collorMin, collorMin, collorMin));
 		}
 	}
 }
