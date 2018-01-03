@@ -13,16 +13,21 @@ void Listener::choice(BITMAP *buffer)
 		Filters::set_cursor_position_x(mouse_x);
 		Filters::set_cursor_position_y(mouse_y);
 	} 
-	if(mouse_b & 2){
-		Filters::set_power(Filters::get_power() -10);
+	if(key[KEY_P]){
+		if(Filters::get_power() < 255)
+			Filters::set_power(Filters::get_power() +5);
 	}	
+	if(key[KEY_L]){
+		if(Filters::get_power() > 0)
+			Filters::set_power(Filters::get_power() -5);
+	}
 	if(key[KEY_1]) mode ='a';
 	if(key[KEY_2]) mode ='h';
 	if(key[KEY_3]) mode ='v';
 	if(key[KEY_4]) mode ='n';
 	if(key[KEY_5]) mode ='m';
-	if(key[KEY_6]) mode ='r';
-	if(key[KEY_7]) mode ='x';
+	if(key[KEY_6]) mode ='x';
+	if(key[KEY_7]) mode ='r';
 	if(key[KEY_8]) Filters::fill_array();
 	if(mode == 'a')
 		Filters::linear_filters(buffer,"Mean Filter");

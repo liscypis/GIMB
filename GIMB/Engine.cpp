@@ -70,10 +70,12 @@ void Engine::running() {
 	while (!exit)
 	{
 		while ( t.getCount()> 0 ) {
-			Text.print("by Zwierzu & Lisu", 1000, 690, 52, 152, 219);
-			Text.print(Filters::to_string_cursor_position(), 50, 20, 52, 152, 219);
-			Text.print("Moc rozdzki", 250, 0, 52, 152, 219);
-			Text.print(Filters::to_string_power(), 250, 20, 52, 152, 219);
+			Text.print("by Zwierzu & Lisu", 1000, 690, 0, 204, 0);
+			Text.print(Filters::to_string_cursor_position(), 50, 20, 0, 204, 0);
+			Text.print("Moc rozdzki", 250, 0, 0, 204, 0);
+			Text.print(Filters::to_string_power(), 250, 20, 0, 204, 0);
+			Text.print("1 - usredniajacy 2 - krawedzie poziome 3 - krawdzie pionowe 4 - negatyw 5 - minimalny 6 - max", 0, 50, 0, 40, 0);
+			Text.print("7 - random 8 - losowane macierzy P - moc rozdzki + L - moc rozdzki -", 0, 75, 0, 40, 0);
 			i.printImage(100, 160, 512,512);
 			lis.choice(buffer);
 			buff.clear();

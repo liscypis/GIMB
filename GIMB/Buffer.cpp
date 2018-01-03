@@ -16,7 +16,7 @@ BITMAP * Buffer::getBuff()
 
 void Buffer::clear() {
 	blit(this->buffer, screen, 0, 0, 0, 0, this->buffer->w, this->buffer->h);
-	clear_to_color(this->buffer,makecol(239,239,27));
+	clear_to_color(this->buffer,makecol(0,153,153));
 }
 
 Buffer::~Buffer()

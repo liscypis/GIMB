@@ -35,7 +35,7 @@ int Filters::vertical_edges_mask[] = {
 int Filters::random_mask[25];
 int Filters::cursor_position_x = x0 + 10;
 int Filters::cursor_position_y = y0 + 10;
-int Filters::power = 190;
+int Filters::power = 255;
 
 void Filters::fill_array()
 {
