@@ -16,7 +16,8 @@ int Filters::average_mask[] = {
 	1, 1, 1, 1, 1
 };
 
-int Filters::horizontal_edges_mask[] = { // Sobel
+int Filters::horizontal_edges_mask[] = {
+	// Sobel
 	2, 2, 4, 2, 2,
 	1, 1, 2, 1, 1,
 	0, 0, 0, 0, 0,
@@ -24,7 +25,8 @@ int Filters::horizontal_edges_mask[] = { // Sobel
 	-2, -2, -4, -2, -2
 };
 
-int Filters::vertical_edges_mask[] = { // Sobel
+int Filters::vertical_edges_mask[] = {
+	// Sobel
 	2, 1, 0, -1, -2,
 	3, 2, 0, -2, -3,
 	4, 3, 0, -3, -4,
@@ -32,16 +34,11 @@ int Filters::vertical_edges_mask[] = { // Sobel
 	2, 1, 0, -1, -2
 };
 
-int Filters::random_mask[25];
+int Filters::user_mask[25];
 int Filters::cursor_position_x = x0 + 10;
 int Filters::cursor_position_y = y0 + 10;
 int Filters::power = 255;
 
-void Filters::fill_array()
-{
-	for (int i = 0; i < 25; i++)
-		random_mask[i] = std::rand() % 10 - 2;
-}
 
 int Filters::mask[25];
 
@@ -58,7 +55,7 @@ void Filters::linear_filters(BITMAP* buffer, const char* type)
 		if (type == "Vertical Edges")
 			mask[i] = vertical_edges_mask[i];
 		if (type == "Random")
-			mask[i] = random_mask[i];
+			mask[i] = user_mask[i];
 
 		mask_sum += mask[i];
 	}
@@ -71,7 +68,9 @@ void Filters::linear_filters(BITMAP* buffer, const char* type)
 		{
 			sum_r = 0;
 			if (getr(getpixel(buffer, i, j)) > getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) - power
-				&& getr(getpixel(buffer, i, j)) < getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) + power)
+				&& getr(getpixel(buffer, i, j)) < getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) + power
+				&& get_cursor_position_x() >= 100 && get_cursor_position_x() < 612
+				&& get_cursor_position_y() >= 160 && get_cursor_position_y() < 672)
 			{
 				for (int k = 0; k < 5; k++)
 					for (int l = 0; l < 5; l++)
@@ -100,7 +99,9 @@ void Filters::negative_filter(BITMAP* buffer)
 		for (int j = y0; j < y_margin; j++)
 		{
 			if (getr(getpixel(buffer, i, j)) > getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) - power
-				&& getr(getpixel(buffer, i, j)) < getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) + power)
+				&& getr(getpixel(buffer, i, j)) < getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) + power
+				&& get_cursor_position_x() >= 100 && get_cursor_position_x() < 612
+				&& get_cursor_position_y() >= 160 && get_cursor_position_y() < 672)
 			{
 				color = 255 - getr(getpixel(buffer, i, j));
 				putpixel(buffer, i + 520, j, makecol(color, color, color));
@@ -121,7 +122,9 @@ void Filters::minimal_filter(BITMAP* buffer)
 		for (int j = y0 + margin; j < y_margin; j++)
 		{
 			if (getr(getpixel(buffer, i, j)) > getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) - power
-				&& getr(getpixel(buffer, i, j)) < getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) + power)
+				&& getr(getpixel(buffer, i, j)) < getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) + power
+				&& get_cursor_position_x() >= 100 && get_cursor_position_x() < 612
+				&& get_cursor_position_y() >= 160 && get_cursor_position_y() < 672)
 			{
 				int collorMin = 255;
 				for (int k = 0; k < 5; k++)
@@ -149,7 +152,9 @@ void Filters::maxinum_filter(BITMAP* buffer)
 		for (int j = y0 + margin; j < y_margin; j++)
 		{
 			if (getr(getpixel(buffer, i, j)) > getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) - power
-				&& getr(getpixel(buffer, i, j)) < getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) + power)
+				&& getr(getpixel(buffer, i, j)) < getr(getpixel(buffer, get_cursor_position_x(), get_cursor_position_y())) + power
+				&& get_cursor_position_x() >= 100 && get_cursor_position_x() < 612
+				&& get_cursor_position_y() >= 160 && get_cursor_position_y() < 672)
 			{
 				int collorMin = 0;
 				for (int k = 0; k < 5; k++)
@@ -215,9 +220,9 @@ int Filters::get_power()
 }
 
 
-int Filters::get_mask()
+int Filters::get_mask(int i)
 {
-	return *mask;
+	return mask[i];
 }
 
 

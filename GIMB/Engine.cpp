@@ -72,7 +72,7 @@ void Engine::running()
 	Images i(buffer);
 	Text text(buffer, *Font.getFont());
 	Timer t(1000);
-	Listener lis;
+	Listener listener;
 	bool isLoaded = false;
 	std::string imageName;
 
@@ -82,29 +82,30 @@ void Engine::running()
 		{
 			if (!isLoaded)
 			{
+				buff.clear();
 				text.print("Podaj nazwe pliku, a nastepnie potwierdz Enterem", 330, 300, 0, 255, 0);
 				buff.clear();
-				imageName = text.inputText();
+				imageName = text.inputText(&buff);
 				i.loadImage(imageName.c_str());
 				isLoaded = true;
 			}
 
 
+			
+			text.print("Kursor:", 1150, 150, 0, 204, 0);
+			text.print(Filters::to_string_cursor_position(), 1150, 180, 0, 204, 0);
+			text.print("Moc rozdzki:", 100, 110, 0, 204, 0);
+			text.print(Filters::to_string_power(), 260, 110, 0, 204, 0);
+			text.print("Q - usredniajacy W - krawedzie poziome E - krawdzie pionowe R - negatyw", 0, 0, 0,40, 0);
+			text.print("T - minimalny Y - max U - Filtr urzytkownika I - wprowadzanie macierzy", 0, 25, 0, 40, 0);
+			text.print("P - moc rozdzki '+' L - moc rozdzki '-' S - zapisz obraz", 0, 50, 0, 40, 0);
 			text.print("Wczytany plik: ", 20, 685, 0, 204, 0);
 			text.print(imageName.c_str(), 200, 685, 0, 204, 0);
 			text.print("by Zwierzu & Lisu", 1000, 690, 0, 204, 0);
-			text.print(Filters::to_string_cursor_position(), 50, 20, 0, 204, 0);
-			text.print("Moc rozdzki", 250, 0, 0, 204, 0);
-			text.print(Filters::to_string_power(), 250, 20, 0, 204, 0);
-			text.print("1 - usredniajacy 2 - krawedzie poziome 3 - krawdzie pionowe 4 - negatyw 5 - minimalny 6 - max", 0, 50, 0,
-			           40, 0);
-			text.print("7 - random 8 - losowane macierzy P - moc rozdzki + L - moc rozdzki -", 0, 75, 0, 40, 0);
-
 
 			i.printImage(100, 160, 512, 512);
-			lis.choice(buffer, text, &i);
+			listener.choice(buffer, text, &i, &buff);
 			buff.clear();
-
 
 			t.decreaseCount();
 

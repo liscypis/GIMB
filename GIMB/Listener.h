@@ -8,7 +8,7 @@ class Listener
 	char mode;
 public:
 	Listener();
-	void choice(BITMAP* buffer, Text t, Images* i);
+	void choice(BITMAP* buffer, Text text, Images* images, Buffer* buff);
 	~Listener();
 };
 

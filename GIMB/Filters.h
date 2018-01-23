@@ -10,7 +10,6 @@ class Filters
 	static int average_mask[];
 	static int horizontal_edges_mask[];
 	static int vertical_edges_mask[];
-	static int random_mask[];
 	static int mask[];
 	static int power;
 	static int cursor_position_x;
@@ -18,6 +17,7 @@ class Filters
 
 public:
 	Filters();
+	static int user_mask[];
 	static void linear_filters(BITMAP* buffer,const char* type);
 	static void negative_filter(BITMAP* buffer);
 	static void minimal_filter(BITMAP* buffer);
@@ -32,7 +32,7 @@ public:
 	static void set_power(int p);
 	static int get_power();
 
-	static int get_mask(); // do wyœwietlania maski 
+	static int get_mask(int i); 
 
 
 	~Filters();
