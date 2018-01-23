@@ -16,20 +16,20 @@ int Filters::average_mask[] = {
 	1, 1, 1, 1, 1
 };
 
-int Filters::horizontal_edges_mask[] = {
-	0, 0, -1, 0, 0,
-	0, 0, -1, 0, 0,
-	0, 0, 2, 0, 0,
+int Filters::horizontal_edges_mask[] = { // Sobel
+	2, 2, 4, 2, 2,
+	1, 1, 2, 1, 1,
 	0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0,
+	-1, -1, -2, -1, -1,
+	-2, -2, -4, -2, -2
 };
 
-int Filters::vertical_edges_mask[] = {
-	0, 0, -1, 0, 0,
-	0, 0, -1, 0, 0,
-	0, 0, 4, 0, 0,
-	0, 0, -1, 0, 0,
-	0, 0, -1, 0, 0,
+int Filters::vertical_edges_mask[] = { // Sobel
+	2, 1, 0, -1, -2,
+	3, 2, 0, -2, -3,
+	4, 3, 0, -3, -4,
+	3, 2, 0, -2, -3,
+	2, 1, 0, -1, -2
 };
 
 int Filters::random_mask[25];
@@ -48,7 +48,7 @@ int Filters::mask[25];
 void Filters::linear_filters(BITMAP* buffer, const char* type)
 {
 	srand(time(NULL));
-
+	int mask_sum = 0;
 	for (int i = 0; i < 25; i++)
 	{
 		if (type == "Mean Filter")
@@ -59,6 +59,8 @@ void Filters::linear_filters(BITMAP* buffer, const char* type)
 			mask[i] = vertical_edges_mask[i];
 		if (type == "Random")
 			mask[i] = random_mask[i];
+
+		mask_sum += mask[i];
 	}
 
 	int sum_r;
@@ -76,8 +78,8 @@ void Filters::linear_filters(BITMAP* buffer, const char* type)
 					{
 						sum_r += mask[k * 5 + l] * getr(getpixel(buffer, i + k - margin, j + l - margin));
 					}
-
-				sum_r /= sizeof(mask) / sizeof(int);
+				if (mask_sum > 0)
+					sum_r /= mask_sum;
 
 				if (sum_r > 255) sum_r = 255;
 				else if (sum_r < 0) sum_r = 0;

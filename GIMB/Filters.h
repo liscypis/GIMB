@@ -1,8 +1,6 @@
 #pragma once
 #include <allegro.h>
 
-
-
 class Filters
 {
 	static const int x0 = 100;

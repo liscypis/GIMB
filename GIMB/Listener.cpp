@@ -7,7 +7,7 @@ Listener::Listener()
 	this->mode = 's';
 }
 
-void Listener::choice(BITMAP *buffer)
+void Listener::choice(BITMAP *buffer,Text t, Images *i)
 {
 	if(mouse_b & 1){
 		Filters::set_cursor_position_x(mouse_x);
@@ -43,6 +43,8 @@ void Listener::choice(BITMAP *buffer)
 		Filters::minimal_filter(buffer);
 	if(mode == 'x')
 		Filters::maxinum_filter(buffer);
+	if(key[KEY_S])
+		i->saveImage();
 }
 
 Listener::~Listener()
