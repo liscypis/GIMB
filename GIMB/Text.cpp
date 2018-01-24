@@ -55,15 +55,19 @@ void Text::inputMatrix(Buffer* b)
 
 				isMinus = false;
 				i++;
+				text[caret] = ASCII;
+				caret++;
+				text[caret] = '\0';
 			}
 			if (ASCII == 45)
 			{
 				isMinus = true;
+				text[caret] = ASCII;
+				caret++;
+				text[caret] = '\0';
 			}
 
-			text[caret] = ASCII;
-			caret++;
-			text[caret] = '\0';
+			
 
 			print(text, 430, 325, 0, 255, 0);
 			b->clear();
